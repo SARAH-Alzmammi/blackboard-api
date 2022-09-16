@@ -28,7 +28,7 @@ Route::controller(AuthController::class)->group(function () {
 });
 Route::controller(CourseController::class)->group(function () {
     Route::get('courses', 'index');
-    // Route::post('todo', 'store');
+    Route::post('courses', 'store');
     // Route::get('todo/{id}', 'show');
     // Route::put('todo/{id}', 'update');
     // Route::delete('todo/{id}', 'destroy');

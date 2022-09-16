@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
-
+use Illuminate\Support\Facades\DB;
 class CourseController extends Controller
 {
     /**
@@ -19,7 +19,13 @@ class CourseController extends Controller
     }
     public function index()
     {
-        $courses = Course::all();
+        $user_id =  auth()->user()->id;
+        $courses=  DB::table('course_user')
+        ->join('users','users.id','=','course_user.user_id') 
+        // TODO: make sure the course is active
+        ->join('courses','courses.id','=','course_user.course_id') 
+        ->select('courses.*')->where('users.id','=', $user_id )->get();
+
         return response()->json([
             'status' => 'success',
             'courses' => $courses,
@@ -44,7 +50,7 @@ class CourseController extends Controller
      */
     public function store(StoreCourseRequest $request)
     {
-        //
+        abort_if( auth()->user()->role !='admin',response()->json('You are not supposed to be here !'));
     }
 
     /**
@@ -89,6 +95,6 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        //
+        Course::destroy( $course->id);
     }
 }

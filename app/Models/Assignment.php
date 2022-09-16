@@ -10,10 +10,10 @@ class Assignment extends Model
     use HasFactory;
 
     public function chapter(){
-        return $this->belongsTo(Chapter::Class);
+        return $this->belongsTo(Chapter::class);
     }
 
     public function studentAssignments(){
-        return $this->hasMany(StudentAssignment::Class);
+        return $this->hasMany(StudentAssignment::class);
     }
 }
