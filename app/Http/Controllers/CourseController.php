@@ -17,9 +17,16 @@ class CourseController extends Controller
     {
         $this->middleware('auth:api');
     }
+
     public function index()
     {
+        // todo return all chapters and assignments related to the course
         $user_id =  auth()->user()->id;
+
+        if(auth()->user()->role == 'admin')
+        $courses = Course::all();
+
+        else
         $courses=  DB::table('course_user')
         ->join('users','users.id','=','course_user.user_id') 
         // TODO: make sure the course is active
@@ -32,15 +39,6 @@ class CourseController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -51,29 +49,15 @@ class CourseController extends Controller
     public function store(StoreCourseRequest $request)
     {
         abort_if( auth()->user()->role !='admin',response()->json('You are not supposed to be here !'));
+        return Course::create($request->all());
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Course  $course
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Course $course)
+
+    public function show($course_id)
     {
-        //
+        return Course::findOrFail($course_id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Course  $course
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Course $course)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -82,9 +66,12 @@ class CourseController extends Controller
      * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCourseRequest $request, Course $course)
+    public function update(UpdateCourseRequest $request,$course_id)
     {
-        //
+        $course=Course::find($course_id);
+        $course->update($request->all());
+        return $course;
+;
     }
 
     /**

@@ -26,10 +26,4 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('refresh', 'refresh');
 
 });
-Route::controller(CourseController::class)->group(function () {
-    Route::get('courses', 'index');
-    Route::post('courses', 'store');
-    // Route::get('todo/{id}', 'show');
-    // Route::put('todo/{id}', 'update');
-    // Route::delete('todo/{id}', 'destroy');
-}); 
+Route::resource('courses', CourseController::class);
