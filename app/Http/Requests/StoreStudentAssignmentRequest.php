@@ -13,7 +13,7 @@ class StoreStudentAssignmentRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,12 @@ class StoreStudentAssignmentRequest extends FormRequest
      */
     public function rules()
     {
+        // TODO: Make sure the grad does not come through
         return [
-            //
+            'user_id'=>['required'], 
+            'assignment_id'=>['required'], 
+            'file'=>['required'],
+            'attempt'=>'sometimes|required',
         ];
     }
 }

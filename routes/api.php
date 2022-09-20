@@ -6,6 +6,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AssignmentController;
+use App\Http\Controllers\StudentAssignmentController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -32,3 +33,4 @@ Route::controller(AuthController::class)->group(function () {
 Route::resource('courses', CourseController::class);
 Route::resource('chapters', ChapterController::class);
 Route::resource('assignments', AssignmentController::class);
+Route::resource('assignments/attempt', StudentAssignmentController::class);

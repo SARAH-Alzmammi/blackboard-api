@@ -13,7 +13,7 @@ class UpdateStudentAssignmentRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,11 @@ class UpdateStudentAssignmentRequest extends FormRequest
      */
     public function rules()
     {
+        // TODO: make sure nothing else come with thr request
         return [
-            //
+            'user_id'=>['required'], 
+            'assignment_id'=>['required'], 
+            'grade'=>['required'],
         ];
     }
 }

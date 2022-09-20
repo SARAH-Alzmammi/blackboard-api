@@ -8,25 +8,6 @@ use App\Http\Requests\UpdateStudentAssignmentRequest;
 
 class StudentAssignmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -36,7 +17,9 @@ class StudentAssignmentController extends Controller
      */
     public function store(StoreStudentAssignmentRequest $request)
     {
-        //
+               // todo check if the student  has been assigned to this course 
+            //    abort_if( auth()->user()->role !='student',response()->json('You are not supposed to be here !'));
+               return StudentAssignment::create($request->all());
     }
 
     /**
@@ -45,22 +28,14 @@ class StudentAssignmentController extends Controller
      * @param  \App\Models\StudentAssignment  $studentAssignment
      * @return \Illuminate\Http\Response
      */
-    public function show(StudentAssignment $studentAssignment)
+    public function show(string $studentAssignment_id)
     {
-        //
+    $assignment= StudentAssignment::findOrFail($studentAssignment_id);
+    return response()->json([
+        'status' => 'success',
+        'assignment' => $assignment,
+    ]);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\StudentAssignment  $studentAssignment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(StudentAssignment $studentAssignment)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      *
@@ -70,17 +45,9 @@ class StudentAssignmentController extends Controller
      */
     public function update(UpdateStudentAssignmentRequest $request, StudentAssignment $studentAssignment)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\StudentAssignment  $studentAssignment
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(StudentAssignment $studentAssignment)
-    {
-        //
+        // only the instructor can update only the grade 
+dd($request->grade);
+        // $studentAssignment->update($request->all());
+        // return $studentAssignment;
     }
 }
