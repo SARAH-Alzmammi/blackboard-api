@@ -13,7 +13,7 @@ class UpdateAssignmentRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,12 @@ class UpdateAssignmentRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name'=>['sometimes,required'], 
+            'instructions'=>['sometimes,required'],
+            'file'=>['sometimes,required'],
+            'weight'=>['sometimes,required'],
+            'allowed_attempts'=>['sometimes,required'],
+            'deadline'=>['sometimes,required'],
         ];
     }
 }

@@ -13,7 +13,7 @@ class StoreAssignmentRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,13 @@ class StoreAssignmentRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'chapter_id'=>['required'], 
+            'name'=>['required'], 
+            'instructions'=>'sometimes|required',
+            'file'=>['required'],
+            'weight'=>['required'],
+            'allowed_attempts'=>'sometimes|required',
+            'deadline'=>['required'],
         ];
     }
 }

@@ -9,26 +9,6 @@ use App\Http\Requests\UpdateAssignmentRequest;
 class AssignmentController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreAssignmentRequest  $request
@@ -36,7 +16,9 @@ class AssignmentController extends Controller
      */
     public function store(StoreAssignmentRequest $request)
     {
-        //
+        // todo check if the instructor has been assigned to this course 
+        abort_if( auth()->user()->role !='instructor',response()->json('You are not supposed to be here !'));
+        return Assignment::create($request->all());
     }
 
     /**
@@ -47,18 +29,11 @@ class AssignmentController extends Controller
      */
     public function show(Assignment $assignment)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Assignment  $assignment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Assignment $assignment)
-    {
-        //
+             $assignment= Assignment::findOrFail($assignment->id);
+             return response()->json([
+                 'status' => 'success',
+                 'assignment' => $assignment,
+             ]);
     }
 
     /**
@@ -70,7 +45,11 @@ class AssignmentController extends Controller
      */
     public function update(UpdateAssignmentRequest $request, Assignment $assignment)
     {
-        //
+        // does not work properly
+        // $chapter=Chapter::find($chapter_id);
+        $assignment->update($request->all());
+        return $assignment;
+    //   dd($request);
     }
 
     /**
@@ -81,6 +60,7 @@ class AssignmentController extends Controller
      */
     public function destroy(Assignment $assignment)
     {
-        //
+            // TODO : secure it 
+            Assignment::destroy( $assignment->id);
     }
 }

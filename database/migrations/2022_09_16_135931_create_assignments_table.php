@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('chapter_id');
             $table->foreign('chapter_id')->references('id')->on('chapters')->onDelete('cascade');
             $table->string('name')->nullable();
-            $table->string('instructions');
+            $table->string('instructions')->nullable();
             $table->string('file');
             $table->float('weight');
             $table->integer('allowed_attempts')->default(1);

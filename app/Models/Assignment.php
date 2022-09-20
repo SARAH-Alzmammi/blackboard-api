@@ -9,6 +9,8 @@ class Assignment extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['chapter_id','name','instructions','file','weight','allowed_attempts','deadline'];
+
     public function chapter(){
         return $this->belongsTo(Chapter::class);
     }

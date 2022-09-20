@@ -67,6 +67,7 @@ class ChapterController extends Controller
      */
     public function destroy(Chapter $chapter)
     {
-        //
+        // TODO : TEST IT 
+        Chapter::destroy( $chapter->id);
     }
 }
