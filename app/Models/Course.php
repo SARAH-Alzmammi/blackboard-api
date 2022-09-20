@@ -15,6 +15,6 @@ class Course extends Model
     }
     
     public function chapters(){
-        return $this->haMany(Chapter::class);
+        return $this->hasMany(Chapter::class);
     }
 }

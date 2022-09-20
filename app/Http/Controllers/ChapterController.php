@@ -8,26 +8,10 @@ use App\Http\Requests\UpdateChapterRequest;
 
 class ChapterController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function __construct()
     {
-        //
+        $this->middleware('auth:api');
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -36,30 +20,30 @@ class ChapterController extends Controller
      */
     public function store(StoreChapterRequest $request)
     {
-        //
+        // todo check if the instructor has been assigned to this course 
+        abort_if( auth()->user()->role !='instructor',response()->json('You are not supposed to be here !'));
+        return Chapter::create($request->all());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Chapter  $chapter
+     * @param  string $chapter_id
      * @return \Illuminate\Http\Response
      */
-    public function show(Chapter $chapter)
+    public function show(string $chapter_id)
     {
-        //
+        // return chapter file & assignments
+        $chapter= Chapter::findOrFail($chapter_id);
+        $assignments= $chapter->assignments()->get();
+      
+        return response()->json([
+            'status' => 'success',
+            'chapter' => $chapter,
+            'assignments' => $assignments,
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Chapter  $chapter
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Chapter $chapter)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -68,9 +52,11 @@ class ChapterController extends Controller
      * @param  \App\Models\Chapter  $chapter
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateChapterRequest $request, Chapter $chapter)
+    public function update(UpdateChapterRequest $request ,$chapter_id)
     {
-        //
+        $chapter=Chapter::find($chapter_id);
+        $chapter->update($request->all());
+        return $chapter;
     }
 
     /**

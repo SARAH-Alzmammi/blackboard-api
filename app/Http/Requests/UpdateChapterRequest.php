@@ -13,7 +13,7 @@ class UpdateChapterRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,9 +22,12 @@ class UpdateChapterRequest extends FormRequest
      * @return array<string, mixed>
      */
     public function rules()
-    {
-        return [
-            //
-        ];
+    {      
+          return 
+          [
+            'title'=>'sometimes|required',
+            'file'=>'sometimes|required', 
+            'course_id'=>['required']
+    ];
     }
 }

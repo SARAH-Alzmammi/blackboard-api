@@ -20,7 +20,6 @@ class CourseController extends Controller
 
     public function index()
     {
-        // todo return all chapters and assignments related to the course
         $user_id =  auth()->user()->id;
 
         if(auth()->user()->role == 'admin')
@@ -55,7 +54,14 @@ class CourseController extends Controller
 
     public function show($course_id)
     {
-        return Course::findOrFail($course_id);
+        $course= Course::findOrFail($course_id);
+        $chapters= $course->chapters()->get();
+      
+        return response()->json([
+            'status' => 'success',
+            'course' => $course,
+            'chapters' => $chapters,
+        ]);
     }
 
 
@@ -63,7 +69,7 @@ class CourseController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateCourseRequest  $request
-     * @param  \App\Models\Course  $course
+     * @param string  $course_id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateCourseRequest $request,$course_id)
@@ -71,7 +77,6 @@ class CourseController extends Controller
         $course=Course::find($course_id);
         $course->update($request->all());
         return $course;
-;
     }
 
     /**
