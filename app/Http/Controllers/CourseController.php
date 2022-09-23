@@ -15,22 +15,16 @@ class CourseController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api');
+        $this->middleware('instructorAssigning');
     }
 
     public function index()
     {
-        $user_id =  auth()->user()->id;
-
         if(auth()->user()->role == 'admin')
         $courses = Course::all();
 
         else
-        $courses=  DB::table('course_user')
-        ->join('users','users.id','=','course_user.user_id') 
-        // TODO: make sure the course is active
-        ->join('courses','courses.id','=','course_user.course_id') 
-        ->select('courses.*')->where('users.id','=', $user_id )->get();
+        $courses= auth()->user()->courses;
 
         return response()->json([
             'status' => 'success',
@@ -48,6 +42,7 @@ class CourseController extends Controller
     public function store(StoreCourseRequest $request)
     {
         abort_if( auth()->user()->role !='admin',response()->json('You are not supposed to be here !'));
+        
         return Course::create($request->all());
     }
 

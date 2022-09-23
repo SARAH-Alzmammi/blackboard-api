@@ -21,6 +21,6 @@ class AdminAuthorization
         if(Auth::user()->role =='admin')
              return $next($request);
 
-      return route('login');
+      return response()->json(['message' =>'Unauthorized!!']);
     }
 }
