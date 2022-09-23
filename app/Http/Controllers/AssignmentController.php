@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Assignment;
 use App\Http\Requests\StoreAssignmentRequest;
 use App\Http\Requests\UpdateAssignmentRequest;
-
+use Illuminate\Support\Facades\Storage;
 class AssignmentController extends Controller
 {
     /**
@@ -18,7 +18,16 @@ class AssignmentController extends Controller
     {
         // todo check if the instructor has been assigned to this course 
         abort_if( auth()->user()->role !='instructor',response()->json('You are not supposed to be here !'));
-        return Assignment::create($request->all());
+        $file = Storage::disk('spaces')->put('/assignment/',$request->file('file'));
+        return Assignment::create([
+            'chapter_id'=>  $request->chapter_id,
+            'name'=>  $request->name,
+            'instructions'=>  $request->instructions,
+            'weight'=>  $request->weight,
+            'allowed_attempts'=>  $request->allowed_attempts,
+            'deadline'=>  $request->deadline,
+            'file'=>  $file,
+        ]);
     }
 
     /**
@@ -29,6 +38,7 @@ class AssignmentController extends Controller
      */
     public function show(Assignment $assignment)
     {
+
              $assignment= Assignment::findOrFail($assignment->id);
              return response()->json([
                  'status' => 'success',
@@ -45,6 +55,7 @@ class AssignmentController extends Controller
      */
     public function update(UpdateAssignmentRequest $request, Assignment $assignment)
     {
+        // and here 
         // does not work properly
         // $chapter=Chapter::find($chapter_id);
         $assignment->update($request->all());

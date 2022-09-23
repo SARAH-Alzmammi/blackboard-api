@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Chapter;
 use App\Http\Requests\StoreChapterRequest;
 use App\Http\Requests\UpdateChapterRequest;
-
+use Illuminate\Support\Facades\Storage;
 class ChapterController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api');
+        // $this->middleware('auth:api');
     }
     /**
      * Store a newly created resource in storage.
@@ -22,7 +22,12 @@ class ChapterController extends Controller
     {
         // todo check if the instructor has been assigned to this course 
         abort_if( auth()->user()->role !='instructor',response()->json('You are not supposed to be here !'));
-        return Chapter::create($request->all());
+        $file = Storage::disk('spaces')->put('/',$request->file('file'));
+        return Chapter::create([
+            'title'=>  $request->title,
+            'course_id'=>  $request->course_id,
+            'file'=>  $file,
+        ]);
     }
 
     /**
@@ -35,8 +40,7 @@ class ChapterController extends Controller
     {
         // return chapter file & assignments
         $chapter= Chapter::findOrFail($chapter_id);
-        $assignments= $chapter->assignments()->get();
-      
+        $assignments= $chapter->assignments()->get();  
         return response()->json([
             'status' => 'success',
             'chapter' => $chapter,
@@ -54,9 +58,20 @@ class ChapterController extends Controller
      */
     public function update(UpdateChapterRequest $request ,$chapter_id)
     {
+        // There is issues regarding updating
         $chapter=Chapter::find($chapter_id);
+        if($request->hasFile('file')){
+            dd("boo");
+        }
         $chapter->update($request->all());
-        return $chapter;
+        // $file = Storage::disk('spaces')->put('avatars/1',$request->file('file'));
+        return $chapter->update([
+            'title'=>  $request->title,
+            'course_id'=>  $request->course_id,
+            // 'file'=>  $file,
+        ]);
+
+ 
     }
 
     /**
@@ -67,7 +82,6 @@ class ChapterController extends Controller
      */
     public function destroy(Chapter $chapter)
     {
-        // TODO : TEST IT 
         Chapter::destroy( $chapter->id);
     }
 }

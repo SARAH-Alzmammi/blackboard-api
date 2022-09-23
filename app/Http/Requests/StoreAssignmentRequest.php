@@ -29,7 +29,7 @@ class StoreAssignmentRequest extends FormRequest
             'instructions'=>'sometimes|required',
             'file'=>['required'],
             'weight'=>['required'],
-            'allowed_attempts'=>'sometimes|required',
+            'allowed_attempts'=>'required',
             'deadline'=>['required'],
         ];
     }
