@@ -25,7 +25,7 @@ class StoreChapterRequest extends FormRequest
     {
         return [
             'title'=>['required'], 
-            'file'=>['required'], 
+            'file'=>'required|mimes:doc,docx,pdf',
             'course_id'=>['required']
         ];
     }

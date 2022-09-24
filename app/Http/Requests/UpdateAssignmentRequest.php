@@ -26,7 +26,7 @@ class UpdateAssignmentRequest extends FormRequest
         return [
             'name'=>['sometimes,required'], 
             'instructions'=>['sometimes,required'],
-            'file'=>['sometimes,required'],
+            'file'=>['sometimes,required','mimes:doc,docx,pdf'],
             'weight'=>['sometimes,required'],
             'allowed_attempts'=>['sometimes,required'],
             'deadline'=>['sometimes,required'],

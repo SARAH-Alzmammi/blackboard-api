@@ -13,6 +13,7 @@ class StoreAssignmentRequest extends FormRequest
      */
     public function authorize()
     {
+        // Question : Where is the best place to check the authorization?
         return true;
     }
 
@@ -27,7 +28,7 @@ class StoreAssignmentRequest extends FormRequest
             'chapter_id'=>['required'], 
             'name'=>['required'], 
             'instructions'=>'sometimes|required',
-            'file'=>['required'],
+            'file'=>'required|mimes:doc,docx,pdf',
             'weight'=>['required'],
             'allowed_attempts'=>'required',
             'deadline'=>['required'],

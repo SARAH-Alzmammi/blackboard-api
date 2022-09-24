@@ -26,7 +26,7 @@ class UpdateChapterRequest extends FormRequest
           return 
           [
             'title'=>'sometimes|required',
-            'file'=>'sometimes|required', 
+            'file'=>['sometimes,required','mimes:doc,docx,pdf'],
             'course_id'=>['required']
     ];
     }

@@ -27,7 +27,7 @@ class StoreStudentAssignmentRequest extends FormRequest
         return [
             'user_id'=>['required'], 
             'assignment_id'=>['required'], 
-            'file'=>['required'],
+            'file'=>'required|mimes:doc,docx,pdf',
             'attempt'=>'sometimes|required',
         ];
     }
