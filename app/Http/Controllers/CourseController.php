@@ -15,7 +15,8 @@ class CourseController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('instructorAssigning');
+        $this->middleware('admin', ['except' => ['index','show']]);
+        $this->middleware('userAssigning', ['only' => ['show']]);
     }
 
     public function index()

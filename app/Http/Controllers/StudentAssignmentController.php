@@ -8,6 +8,11 @@ use App\Http\Requests\UpdateStudentAssignmentRequest;
 use Illuminate\Support\Facades\Storage;
 class StudentAssignmentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('studentAssigning', ['only' => ['store','show']]);
+        $this->middleware('instructorAssigning', ['only' => ['update']]);
+    }
 
     /**
      * Store a newly created resource in storage.

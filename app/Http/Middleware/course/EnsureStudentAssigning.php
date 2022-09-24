@@ -4,7 +4,11 @@ namespace App\Http\Middleware\course;
 
 use Closure;
 use Illuminate\Http\Request;
-
+use App\Models\StudentAssignment;
+use App\Models\Chapter;
+use App\Models\Assignment;
+use App\Models\Course    
+;
 class EnsureStudentAssigning
 {
     /**
@@ -16,15 +20,35 @@ class EnsureStudentAssigning
      */
     public function handle(Request $request, Closure $next)
     {
-        $is_assigned = $request->user()->courses->find($request->route()->parameters('courses'));
 
-        if(!$is_assigned ->isNotEmpty())
+
+    if(isset($request->route()->parameters()['attempt'])){
+      $assignment= StudentAssignment::find($request->route()->parameters()['attempt'])->assignment()->first();
+      $course = Course::find(Chapter::find($assignment->chapter_id)->course_id);
+    }
+    if(isset($request->route()->parameters()['chapters'])){
+      $course = Course::find(Chapter::find($request->route()->parameters()['chapters'])->course_id);
+    }
+
+    if(isset($request->route()->parameters()['courses'])){
+      $course = Course::find($request->route()->parameters()['courses']);
+    }
+    if(isset($request->route()->parameters()['assignments'])){
+      $assignment= Assignment::find($request->route()->parameters()['assignments'])->first();
+      $course = Course::find(Chapter::find($assignment->chapter_id)->course_id);
+
+    }
+
+
+        $assigned_course= $request->user()->courses->find($course->id);
+
+        if($assigned_course==null|| $request->user()==null)
           return response()->json(['message' =>'Unassigned!!']);
 
 
         // TODO : ensure the courses is active
 
-        // make sure of the role
+        // making sure of the role
           if( $request->user()->role !='student')
           return response()->json(['message' =>'Unauthorized!!']);
 

@@ -11,6 +11,6 @@ class StudentAssignment extends Model
     protected $fillable = ['user_id','assignment_id','file','file','grade','attempt'];
 
     public function assignment(){
-        return $this->belongsTo(Assignment::class);
+      return $this->belongsTo(Assignment::class);  
     }
 }

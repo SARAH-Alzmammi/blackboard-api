@@ -10,7 +10,8 @@ class ChapterController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware('auth:api');
+        $this->middleware('studentAssigning', ['only' => ['show']]);
+        $this->middleware('instructorAssigning', ['except' => ['show']]);
     }
     /**
      * Store a newly created resource in storage.
